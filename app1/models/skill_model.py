@@ -2,6 +2,8 @@ from sqlalchemy import Column, Integer, String, Float, JSON, DateTime, ForeignKe
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 from app1.database.session import Base
+from pydantic import BaseModel
+from typing import Optional, List, Dict
 
 class JobAnalysis(Base):
     __tablename__ = 'job_analyses'
@@ -32,3 +34,28 @@ class IndividualSkill(Base):
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
     job_analysis = relationship("JobAnalysis", back_populates="individual_skills")
+
+from typing import List, Optional
+from pydantic import BaseModel
+from uuid import UUID
+
+# Define models that match the actual database structure
+class RecruiterCreate(BaseModel):
+    name: str
+    email: Optional[str] = None
+    phone_number: Optional[str] 
+    skills: Optional[List[str]] = None
+    role: Optional[str] = None
+    experience: Optional[int] = None
+
+class RecruiterResponse(BaseModel):
+    id: UUID
+    name: str
+    email: Optional[str] = None
+    phone_number: Optional[str]
+    skills: Optional[List[str]] = None
+    role: Optional[str] = None
+    experience: Optional[int] = None
+    
+    class Config:
+        orm_mode = True

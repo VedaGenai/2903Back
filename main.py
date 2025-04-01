@@ -1,8 +1,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import os
-# Import the specific routers from skills_evaluation
 from app.routes.skills_evaluation import analyze_job_description_router
+from app.routes.recruiters import router as router1
 from app.routes.upload import router
 from app1.database.initialization import init_db
 app = FastAPI()
@@ -20,6 +20,7 @@ app.add_middleware(
 # Include the routers
 app.include_router(analyze_job_description_router, prefix="/api")
 app.include_router(router, prefix="/api")
+app.include_router(router1)
 
 @app.on_event("startup")
 async def startup_event():
